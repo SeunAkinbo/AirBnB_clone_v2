@@ -19,40 +19,38 @@ class DBStorage:
     __session = None
 
     def __init__(self):
-        user = getenv("HBNB_MYSQL_USER")
-        passwd = getenv("HBNB_MYSQL_PWD")
-        db = getenv("HBNB_MYSQL_DB")
+        username = getenv("HBNB_MYSQL_USER")
+        password = getenv("HBNB_MYSQL_PWD")
+        db_name = getenv("HBNB_MYSQL_DB")
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(user, passwd, host, db),
+                                      .format(username, password, host, db_name),
                                       pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary
-        Return:
-            returns a dictionary of __object
+         """Queries current database with the classname
+        Args:
+            -cls
         """
-        dic = {}
-        if cls:
-            if type(cls) is str:
-                cls = eval(cls)
-            query = self.__session.query(cls)
-            for elem in query:
-                key = "{}.{}".format(type(elem).__name__, elem.id)
-                dic[key] = elem
+        obj = {}
+        if cls is not None:
+            objs = self.__session.query(cls)
+            for item in objs:
+                key = "{}.{}".format(type(item).__name__, item.id)
+                obj[key] = item
         else:
-            lista = [State, City, User, Place, Review, Amenity]
-            for clase in lista:
-                query = self.__session.query(clase)
-                for elem in query:
-                    key = "{}.{}".format(type(elem).__name__, elem.id)
-                    dic[key] = elem
-        return (dic)
+            obj_list = [User, State, City, Amenity, Place and Review]
+            for cls_item in obj_list:
+                items = self.__session.query(cls_item)
+                for item in items:
+                    key = "{}.{}".format(type(item).__name__, item.id)
+                obj[key] = item
+        return obj
 
     def new(self, obj):
         """add a new element in the table
