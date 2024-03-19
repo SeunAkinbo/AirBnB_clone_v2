@@ -118,19 +118,21 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not args:
                 raise SyntaxError()
-            arg_list = args.split(" ")
-            kw = {}
-            for arg in arg_list[1:]:
-                arg_splited = arg.split("=")
-                arg_splited[1] = eval(arg_splited[1])
-                if type(arg_splited[1]) is str:
-                    arg_splited[1] = arg_splited[1].replace("_", " ").replace('"', '\\"')
-                kw[arg_splited[0]] = arg_splited[1]
+
+            class_name, *kv_pairs = args.split()
+            if class_name not in HBNBCommand.classes:
+                raise NameError("** class doesn't exist **")
+
+            params = {}
+            for pair in kv_pairs:
+                key, val = pair.split("=")
+                val = eval(val)
+                if type(val) is str:
+                    val = val.replace("_", " ").replace('"', '\\"')
+                params[key] = val
         except SyntaxError:
             print("** class name missing **")
-        except NameError:
-            print("** class doesn't exist **")
-        new_instance = HBNBCommand.classes[arg_list[0]](**kw)
+        new_instance =  HBNBCommand.classes[class_name](**params)
         new_instance.save()
         print(new_instance.id)
 
