@@ -37,22 +37,22 @@ class DBStorage:
         Args:
             -cls
         """
-        obj = {}
+        dic = {}
         if cls:
             if type(cls) is str:
                 cls = eval(cls)
-            objs = self.__session.query(cls)
-            for item in objs:
-                key = "{}.{}".format(type(item).__name__, item.id)
-                obj[key] = item
+            query = self.__session.query(cls)
+            for elem in query:
+                key = "{}.{}".format(type(elem).__name__, elem.id)
+                dic[key] = elem
         else:
-            obj_list = [User, State, City, Amenity, Place and Review]
-            for cls_item in obj_list:
-                items = self.__session.query(cls_item)
-                for item in items:
-                    key = "{}.{}".format(type(item).__name__, item.id)
-                obj[key] = item
-        return obj
+            lista = [State, City, User, Place, Review, Amenity]
+            for clase in lista:
+                query = self.__session.query(clase)
+                for elem in query:
+                    key = "{}.{}".format(type(elem).__name__, elem.id)
+                    dic[key] = elem
+        return (dic)
 
     def new(self, obj):
         """add a new element in the table
