@@ -26,8 +26,6 @@ class DBStorage:
                         username, passwordd, host, db_name),
                         pool_pre_ping=True))
 
-        Base.metadata.bind = engine
-
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -70,3 +68,7 @@ class DBStorage:
         sess_fctry = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_fctry)
         self.__session = Session()
+
+    def close(self):
+        """Closes all sessions"""
+        self.__session.close()

@@ -10,4 +10,4 @@ class City(BaseModel, Base):
 
     name = Column("name", String(128), nullable=False)
     state_id = Column("state_id", String(60),
-                      ForeignKey(State.id), nullable=False)
+                      ForeignKey('state.id'), nullable=False)

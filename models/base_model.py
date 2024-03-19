@@ -14,9 +14,9 @@ class BaseModel:
     id = Column("id", String(60), unique=True, primary_key=True,
                 nullable=False)
     created_at = Column("created_at", DateTime,
-                        nullable=False, default=datetime.utcnow)
+                        nullable=False, default=datetime.utcnow())
     updated_at = Column("updated_at", DateTime,
-                        nullable=False, default=datetime.utcnow)
+                        nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -62,4 +62,4 @@ class BaseModel:
 
     def delete(self):
         """Delete object instance from storage"""
-        models.storage.delete(self)
+        storage.delete(self)

@@ -197,6 +197,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
+            from models import storage
             del(storage.all()[key])
             storage.save()
         except KeyError:
@@ -216,9 +217,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
+            from models import storage
             for k, v in storage.all(HBNBCommand.classes[args]).items():
                 print_list.append(str(v))
         else:
+            from models import storage
             for k, v in storage.all().items():
                 print_list.append(str(v))
         print(print_list)
@@ -231,6 +234,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
+        from models import storage
         for k, v in storage._FileStorage__objects.items():
             if args == k.split('.')[0]:
                 count += 1
@@ -267,6 +271,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         # determine if key is present
+        from models import storage
         if key not in storage.all():
             print("** no instance found **")
             return
@@ -301,6 +306,7 @@ class HBNBCommand(cmd.Cmd):
             args = [att_name, att_val]
 
         # retrieve dictionary of current objects
+        from models import storage
         new_dict = storage.all()[key]
 
         # iterate through attr names and values
