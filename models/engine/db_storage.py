@@ -39,6 +39,8 @@ class DBStorage:
         """
         obj = {}
         if cls is not None:
+            if type(cls) is str:
+                cls = eval(cls)
             objs = self.__session.query(cls)
             for item in objs:
                 key = "{}.{}".format(type(item).__name__, item.id)
