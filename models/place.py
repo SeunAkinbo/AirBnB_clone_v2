@@ -3,6 +3,10 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy.orm import relationship
+from os import getenv
+import models
+import shlex
 
 
 class Place(BaseModel, Base):
@@ -32,15 +36,15 @@ class Place(BaseModel, Base):
         @property
         def reviews(self):
             """ Returns list of reviews.id """
-            var = models.storage.all()
-            lista = []
-            result = []
-            for key in var:
-                review = key.replace('.', ' ')
+            records = models.storage.all()
+            review_list = []
+            output = []
+            for item in records:
+                review = item.replace('.', ' ')
                 review = shlex.split(review)
-                if (review[0] == 'Review'):
-                    lista.append(var[key])
-            for elem in lista:
-                if (elem.place_id == self.id):
-                    result.append(elem)
-            return (result)
+                if review[0] == 'Review':
+                   review_list.append(var[item])
+            for item in review_list:
+                if item.place_id == self.id:
+                    output.append(item)
+            return output
