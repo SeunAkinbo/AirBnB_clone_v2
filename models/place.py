@@ -42,10 +42,10 @@ class Place(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                               backref="places")
+                               backref="place")
 
         amenities = relationship("Amenity",
-                                 secondary= place_amenity,
+                                 secondary=place_amenity,
                                  viewonly=False,
                                  back_populates="place_amenities") 
     else:
@@ -61,9 +61,9 @@ class Place(BaseModel, Base):
                 if review[0] == 'Review':
                    review_list.append(var[item])
             for item in review_list:
-                if item.place_id == self.id:
+                if (item.place_id == self.id):
                     output.append(item)
-            return output
+            return (output)
 
         @property
         def amenities(self):
