@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 params[key] = val
         except SyntaxError:
             print("** class name missing **")
-        new_instance =  HBNBCommand.classes[class_name](**params)
+        new_instance = HBNBCommand.classes[class_name](**params)
         new_instance.save()
         print(new_instance.id)
 
@@ -198,7 +198,7 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             from models import storage
-            del(storage.all()[key])
+            del storage.all()[key]
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -333,6 +333,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
