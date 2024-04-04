@@ -14,17 +14,22 @@ def do_deploy(archive_path):
     if exists(archive_path) is False:
         return False
     try:
-        file_n = archive_path.split("/")[-1]
-        no_ext = file_n.split(".")[0]
-        path = "/data/web_static/releases/"
+        file_name = archive_path.split("/")[-1]
+        no_extension = file_name.split(".")[0]
+        releases_path = "/data/web_static/releases/"
+        current_path = "/data/web_static/current"
+
         put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
-        run('rm /tmp/{}'.format(file_n))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
-        run('rm -rf {}{}/web_static'.format(path, no_ext))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
+        run('mkdir -p {}{}/'.format(releases_path, no_extension))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_name,
+                                               releases_path, no_extension))
+        run('rm /tmp/{}'.format(file_name))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(releases_path,
+                                                    no_extension))
+        run('rm -rf {}{}/web_static'.format(releases_path, no_extension))
+        run('rm -rf {}'.format(current_path))
+        run('ln -s {}{}/ {}'.format(releases_path, no_extension, current_path))
         return True
-    except:
+    except Exception as e:
+        print(e)
         return False
