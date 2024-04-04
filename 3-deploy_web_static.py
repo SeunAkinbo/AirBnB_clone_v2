@@ -1,12 +1,8 @@
 #!/usr/bin/python3
-"""
-Fabric script based on the file 2-do_deploy_web_static.py that distributes an
-archive to the web servers, using the function deploy:
-"""
+"""Module - 3-deploy_web_static"""
 
 from fabric.api import put, run, env, local
 from datetime import datetime
-from os.path import exists, isdir
 env.hosts = ["100.25.158.83", "54.82.178.173"]
 
 
@@ -26,7 +22,7 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Deploys an archive to the web servers"""
-    if exists(archive_path) is False:
+    if not exists(archive_path):
         return False
     try:
         file_name = archive_path.split("/")[-1]
@@ -53,6 +49,6 @@ def do_deploy(archive_path):
 def deploy():
     """Deploys archive to the web servers"""
     archive_path = do_pack()
-    if archive_path is None:
+    if not archive_path:
         return False
     return do_deploy(archive_path)
