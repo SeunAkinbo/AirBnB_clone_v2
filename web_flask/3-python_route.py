@@ -26,7 +26,7 @@ def c_route(text):
     return "C {}".format(escape(text))
 
 
-@app.route("/python/<text>", defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route("/python", defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
 def python_route(text):
     """Route displays python and text"""
