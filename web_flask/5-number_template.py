@@ -2,6 +2,7 @@
 """Python web framework module - 0-hello_route"""
 
 from flask import Flask
+from flask import render_template
 from markupsafe import escape
 
 app = Flask(__name__)
