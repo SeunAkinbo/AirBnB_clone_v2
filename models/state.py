@@ -19,9 +19,7 @@ class State(BaseModel, Base):
         name = Column("name", String(128), nullable=False)
         cities = relationship("City", cascade="all, delete, delete-orphan",
                               backref="state")
-
-    if getenv("HBNB_TYPE_STORAGE") != "db":
-        name = ""
+    else:
         @property
         def cities(self):
             data = models.storage.all()
