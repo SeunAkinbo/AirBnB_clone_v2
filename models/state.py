@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 from models.base_model import BaseModel, Base
-from sqlalchemy.ext.declarative import declarative_base
+from models.city import City
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from os import getenv
 import models
 import shlex
 
@@ -13,19 +14,14 @@ class State(BaseModel, Base):
     Inherits:
         BaseModel, Base
     """
-    if models.storage == "db":
+    if getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = "states"
         name = Column("name", String(128), nullable=False)
         cities = relationship("City", cascade="all, delete, delete-orphan",
                               backref="state")
-    else:
+
+    if getenv("HBNB_TYPE_STORAGE") != "db":
         name = ""
-
-    def __init__(self, *args, **kwargs):
-        """Initilization of the state class"""
-        super().__init__(*args, **kwargs)
-
-    if models.storage != "db":
         @property
         def cities(self):
             data = models.storage.all()
